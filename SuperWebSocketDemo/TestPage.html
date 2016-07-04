@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+</head>
+<body>
+    <input type="button" id="send" onclick="send()" value="发送">
+    <input type="text" id="message">
+    <script type="text/javascript">
+    var  wsClient=new WebSocket( 'ws://localhost:40001');
+    wsClient.open=function(e){
+        console.log("Connected!");
+    }
+    wsClient.onclose=function(e){
+        console.log("Disconnected!");
+    }
+    wsClient.onmessage=function(e){
+        console.log("接收消息:"+e.data);
+    }
+    wsClient.onerror=function(e){
+        console.log(e.data);
+    }
+    function send(){
+        var  oText=document.getElementById("message");
+        wsClient.send(oText.value);
+    }
+    </script>
+</body>
+</html>
