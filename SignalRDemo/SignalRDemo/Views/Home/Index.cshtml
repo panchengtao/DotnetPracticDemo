@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SignalR Simple Chat</title>
+    <style type="text/css">
+        .container {
+            background-color: #99CCFF;
+            border: thick solid #808080;
+            margin: 20px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <input type="text" id="message"/>
+    <input type="button" id="sendmessage" value="Send"/>
+    <input type="hidden" id="displayname"/>
+    <ul id="discussion"></ul>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+<!--引用自动生成的SignalR脚本. -->
+<script src="~/signalr/hubs"></script>
+<!--更新界面，发送信息.-->
+<script type="text/javascript">
+    $(function () {
+        //logging
+        // 声明一个hub代理的引用
+        var chat = $.connection.chatHub;
+        // 创建一个让hub广播消息的方法
+        chat.client.sendMessage = function (name, message) {
+            // 以Html encode展示name和message
+            var encodedName = $('<div />').text(name).html();
+            var encodedMsg = $('<div />').text(message).html();
+            // 在页面上添加消息
+            $('#discussion').append('<li><strong>' + encodedName
+                + '</strong>:&nbsp;&nbsp;' + encodedMsg + '</li>');
+        };
+        // 获取name并且在messages之前保存它
+        $('#displayname').val(prompt('Enter your name:', ''));
+        $('#message').focus();
+        // 开始连接.
+        $.connection.hub.start().done(function() {
+            $('#sendmessage').click(function() {
+                // 呼叫hub的Send方法
+                chat.server.send($('#displayname').val(), $('#message').val());
+                $('#message').val('').focus();
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -27,8 +27,7 @@ namespace SocketDemo
                 {
                     tempSocket.Connect(ipe);
                 }
-
-
+                
                 if (tempSocket.Connected)
                 {
                     s = tempSocket;
