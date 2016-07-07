@@ -29,9 +29,9 @@
 <!--更新界面，发送信息.-->
 <script type="text/javascript">
     $(function () {
-        //logging
         // 声明一个hub代理的引用
         var chat = $.connection.chatHub;
+        // 若要定义一个服务器可以从hub调用的方法，通过使用client属性
         // 创建一个让hub广播消息的方法
         chat.client.sendMessage = function (name, message) {
             // 以Html encode展示name和message
@@ -45,7 +45,9 @@
         $('#displayname').val(prompt('Enter your name:', ''));
         $('#message').focus();
         // 开始连接.
-        $.connection.hub.start().done(function() {
+        $.connection.hub.start().done(function () {
+            //logging
+            $.connection.chatHub.logging = true;
             $('#sendmessage').click(function() {
                 // 呼叫hub的Send方法
                 chat.server.send($('#displayname').val(), $('#message').val());

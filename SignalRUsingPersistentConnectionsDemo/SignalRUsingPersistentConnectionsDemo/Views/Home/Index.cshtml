@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var connection = $.connection("/Connections/ChatConnection");
+
+        $('#displayname').val(prompt('Enter your name:', ''));
+        $("msg").focus();
+
+        connection.received(function (data) {
+            $('#messages').append('<li>' + data + '</li>');
+        });
+
+        connection.start().done(function() {
+            $("#broadcast").click(function () {
+                connection.send($('#displayname').val()+'：'+$('#msg').val());
+            });
+        });
+
+    });
+</script>
+
+<input type="text" id="msg" />
+<input type="button" id="broadcast" value="broadcast"/>
+<input type="hidden" id="displayname" />
+
+<ul id="messages"></ul>

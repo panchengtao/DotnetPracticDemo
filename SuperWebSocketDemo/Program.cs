@@ -5,7 +5,7 @@ using static System.Console;
 
 namespace SuperWebSocketDemo
 {
-    internal class Program
+    class Program
     {
         private static void Main(string[] args)
         {
@@ -17,7 +17,7 @@ namespace SuperWebSocketDemo
 
             try
             {
-                server.Setup("127.0.0.1", 40001); 
+                server.Setup("127.0.0.1", 4141); 
                 server.Start(); 
             }
             catch (Exception ex)

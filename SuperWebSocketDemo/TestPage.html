@@ -9,7 +9,7 @@
     <input type="button" id="send" onclick="send()" value="发送">
     <input type="text" id="message">
     <script type="text/javascript">
-    var  wsClient=new WebSocket( 'ws://localhost:40001');
+    var  wsClient=new WebSocket( 'ws://localhost:4141');
     wsClient.open=function(e){
         console.log("Connected!");
     }
