@@ -16,7 +16,7 @@ namespace Users.Controllers
         private AppUser CurrentUser => UserManager.FindByName(HttpContext.User.Identity.Name);
 
         // GET: Home
-        [Authorize]
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var data = new Dictionary<string, object> {{"Placeholder", "Placeholder"}};

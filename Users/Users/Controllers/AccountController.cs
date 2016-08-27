@@ -116,8 +116,7 @@ namespace Users.Controllers
                     return View("Error", result.Errors);
                 }
             }
-            var ident = await UserManager.CreateIdentityAsync(user,
-                DefaultAuthenticationTypes.ApplicationCookie);
+            var ident = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             ident.AddClaims(loginInfo.ExternalIdentity.Claims);
             AuthManager.SignIn(new AuthenticationProperties
             {
