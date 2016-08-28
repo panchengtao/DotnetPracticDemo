@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Users.Models;
+using Users.Services;
 
 namespace Users.Infrastructure
 {
@@ -26,13 +28,23 @@ namespace Users.Infrastructure
                 RequireUppercase = true
             };
 
-            //  自定义用户验证
-            //manager.UserValidator = new CustomUserValidator(manager)
-            //{
-            //    AllowOnlyAlphanumericUserNames = true,
-            //    RequireUniqueEmail = true
-            //};
-            
+            //  Customize Validate
+            manager.EmailService = new EmailService();
+            var dataProtectionProvider = options.DataProtectionProvider;
+            if (dataProtectionProvider != null)
+            {
+                manager.UserTokenProvider = new DataProtectorTokenProvider<AppUser>(dataProtectionProvider.Create("ASP.NET Identity"))
+                {
+                    TokenLifespan = TimeSpan.FromHours(6)
+                };
+            }
+
+            manager.UserValidator = new CustomUserValidator(manager)
+            {
+                AllowOnlyAlphanumericUserNames = true,
+                RequireUniqueEmail = true
+            };
+
             return manager;
         }
     }
